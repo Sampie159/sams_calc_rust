@@ -1,17 +1,16 @@
+#[repr(u8)]
 pub enum TokenKind {
     END = 0,
-    ADD = '+',
-    SUB = '-',
-    MUL = '*',
-    DIV = '/',
-    EXP_BEGIN = '(',
-    EXP_END = ')',
-    WHITESPACE = ' ',
-    NUMBER,
+    ADD = b'+',
+    SUB = b'-',
+    MUL = b'*',
+    DIV = b'/',
+    EXPBEGIN = b'(',
+    EXPEND = b')',
 }
 
 pub struct Token {
     kind: TokenKind,
-    text: &str,
+    text: String,
     size: u64,
 }
