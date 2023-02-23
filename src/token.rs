@@ -1,16 +1,21 @@
-#[repr(u8)]
 pub enum TokenKind {
-    END = 0,
-    ADD = b'+',
-    SUB = b'-',
-    MUL = b'*',
-    DIV = b'/',
-    EXPBEGIN = b'(',
-    EXPEND = b')',
+    ADD,
+    SUB,
+    MUL,
+    DIV,
+    POW,
+    EXPBEGIN,
+    EXPEND,
+    NUMBER,
 }
 
 pub struct Token {
     kind: TokenKind,
     text: String,
-    size: u64,
+}
+
+impl Token {
+    pub fn new_token(kind: TokenKind, text: String) -> Self {
+        Token { kind, text }
+    }
 }

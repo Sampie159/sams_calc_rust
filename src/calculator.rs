@@ -1,7 +1,9 @@
+use crate::token::TokenKind;
+
 pub struct Operation {
-    op: char,
-    arg1: f64,
-    arg2: f64,
+    op: TokenKind,
+    arg1: Option<f64>,
+    arg2: Option<f64>,
 }
 
 pub struct TreeOperations {
@@ -11,15 +13,19 @@ pub struct TreeOperations {
 }
 
 impl Operation {
-    pub fn new_op(op: char, arg1: f64, arg2: f64) -> Self {
-        Operation { op, arg1, arg2 }
+    pub fn new_op(op: TokenKind) -> Self {
+        Operation {
+            op,
+            arg1: None,
+            arg2: None,
+        }
     }
 
     pub fn calculate<T>(&self, func: T) -> f64
     where
         T: Fn(f64, f64) -> f64,
     {
-        func(self.arg1, self.arg2)
+        func(self.arg1.unwrap(), self.arg2.unwrap())
     }
 
     pub fn solve_operation(&self) -> f64 {
@@ -27,11 +33,13 @@ impl Operation {
         let sub = |a, b| a - b;
         let mul = |a, b| a * b;
         let div = |a, b| a / b;
+        let pow = |a: f64, b: f64| a.powf(b);
         match self.op {
-            '+' => self.calculate(add),
-            '-' => self.calculate(sub),
-            '*' => self.calculate(mul),
-            '/' => self.calculate(div),
+            TokenKind::ADD => self.calculate(add),
+            TokenKind::SUB => self.calculate(sub),
+            TokenKind::MUL => self.calculate(mul),
+            TokenKind::DIV => self.calculate(div),
+            TokenKind::POW => self.calculate(pow),
             _ => panic!("AAAAAAAAAAAAAAAAAAAAAAAAAAAA"),
         }
     }
@@ -58,10 +66,10 @@ impl TreeOperations {
 
     pub fn solve_tree(&mut self) -> f64 {
         if self.left.is_some() {
-            self.op.arg1 = self.left.unwrap().solve_tree();
+            self.op.arg1 = Some(self.left.as_mut().unwrap().solve_tree());
         }
         if self.right.is_some() {
-            self.op.arg2 = self.right.unwrap().solve_tree();
+            self.op.arg2 = Some(self.right.as_mut().unwrap().solve_tree());
         }
 
         self.op.solve_operation()
