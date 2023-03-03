@@ -1,21 +1,44 @@
+#[derive(Debug)]
 pub enum TokenKind {
     ADD,
     SUB,
     MUL,
     DIV,
     POW,
-    EXPBEGIN,
-    EXPEND,
     NUMBER,
+    EXP_BEGIN,
+    EXP_END,
+    INVALID,
 }
 
+#[derive(Debug)]
 pub struct Token {
-    kind: TokenKind,
-    text: String,
+    pub kind: TokenKind,
+    pub text: Option<String>,
+}
+
+impl TokenKind {
+    pub fn get_token(ch: char) -> Self {
+        return match ch {
+            '+' => Self::ADD,
+            '-' => Self::SUB,
+            '*' => Self::MUL,
+            '/' => Self::DIV,
+            '^' => Self::POW,
+            _ => panic!("AAAAAAAAAAAAAAAAAAAAAAAAAAAA"),
+        };
+    }
 }
 
 impl Token {
-    pub fn new_token(kind: TokenKind, text: String) -> Self {
-        Token { kind, text }
+    pub fn new_token(kind: TokenKind) -> Self {
+        Token { kind, text: None }
+    }
+
+    pub fn new_full(kind: TokenKind, text: String) -> Self {
+        Token {
+            kind,
+            text: Some(text),
+        }
     }
 }

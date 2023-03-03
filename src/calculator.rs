@@ -1,11 +1,13 @@
 use crate::token::TokenKind;
 
+#[derive(Debug)]
 pub struct Operation {
-    op: TokenKind,
-    arg1: Option<f64>,
-    arg2: Option<f64>,
+    pub op: TokenKind,
+    pub arg1: Option<f64>,
+    pub arg2: Option<f64>,
 }
 
+#[derive(Debug)]
 pub struct TreeOperations {
     op: Operation,
     left: Option<Box<TreeOperations>>,
@@ -40,7 +42,7 @@ impl Operation {
             TokenKind::MUL => self.calculate(mul),
             TokenKind::DIV => self.calculate(div),
             TokenKind::POW => self.calculate(pow),
-            _ => panic!("AAAAAAAAAAAAAAAAAAAAAAAAAAAA"),
+            _ => panic!("AAAAAAAAAAAAAAAAAAAAAAA {:?}", self.op),
         }
     }
 }
